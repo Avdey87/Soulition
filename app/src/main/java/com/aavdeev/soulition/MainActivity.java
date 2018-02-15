@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,27 +46,23 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    JSONArray rakets = jsonObj.getJSONArray("rocket");
+                    JSONArray jsonArray = new JSONArray(jsonStr);
+                    //JSONArray rakets = jsonArray.getJSONArray("rocket");
 
-                    for (int i = 0; i < rakets.length(); i++) {
-                        JSONObject r = rakets.getJSONObject(i);
-                        String name = r.getString("rocket_id");
-                        String time = r.getString("launch_date_utc ");
-                        String mission = r.getString("mission_patch");
-                        String details = r.getString("details");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject r = jsonArray.getJSONObject(i);
+                        String rocket_name=r.getJSONObject("rocket").getString("rocket_name");
+                        String time = r.getString("launch_date_local");
+                        String mission = r.getJSONObject("links").getString("mission_patch");
+                       String details = r.getString("details");
 
-                       /* JSONObject rocket_id = r.getJSONObject("rocket_id");
-                        String raketName = r.getString("roket");
-                        String launchTime = r.getString("launch_date_unix");
-                        String missionPath = r.getString("mission_patch");
-                        String detailsRaket = r.getString("details");
-*/
+
+
                         HashMap<String, String> raket = new HashMap<>();
 
-                        raket.put("rocket_id", name);
-                        raket.put("launch_date_utc", time);
-                        raket.put("mission_patch", mission);
+                        raket.put("rocket_name", rocket_name);
+                        raket.put("launch_date_local", time);
+                       raket.put("mission_patch", mission);
                         raket.put("details", details);
 
                         raketsList.add(raket);
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, raketsList,
-                    R.layout.list_item, new String[]{ "roket","launch_date_unix","mission_patch","details"},
+                    R.layout.list_item, new String[]{ "rocket_name","launch_date_local","mission_patch","details"},
                     new int[]{R.id.raket_name, R.id.time, R.id.mission_path, R.id.details});
             listView.setAdapter(adapter);
 
