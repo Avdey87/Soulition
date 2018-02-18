@@ -1,5 +1,6 @@
 package com.aavdeev.soulition;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +15,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private String TAG = "MainActivity";
     private ListView listView;
@@ -52,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject r = jsonArray.getJSONObject(i);
                         String rocket_name=r.getJSONObject("rocket").getString("rocket_name");
-                        String time = r.getString("launch_date_local");
+                        String time =  r.getString("launch_date_local");
                         String mission = r.getJSONObject("links").getString("mission_patch");
                        String details = r.getString("details");
+
+                        /*SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                        String date = fmt.format(time);*/
 
 
 
